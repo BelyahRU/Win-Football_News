@@ -5,7 +5,10 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .red
+        FootballAPI.shared.fetchChampionsLeagueMatches(from: LeagueIds.premierLeague.rawValue)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            print(FootballAPI.shared.matches)
+        }
     }
 
 

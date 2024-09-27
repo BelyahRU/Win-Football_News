@@ -12,6 +12,8 @@
 		1AEE3DCF2CA5D47500C93E60 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEE3DCE2CA5D47500C93E60 /* ViewController.swift */; };
 		1AEE3DD42CA5D47800C93E60 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1AEE3DD32CA5D47800C93E60 /* Assets.xcassets */; };
 		1AEE3DD72CA5D47800C93E60 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 1AEE3DD62CA5D47800C93E60 /* Base */; };
+		1AEE3DEB2CA5F4EC00C93E60 /* APICaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEE3DEA2CA5F4EC00C93E60 /* APICaller.swift */; };
+		1AEE3DED2CA6FC7200C93E60 /* League.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEE3DEC2CA6FC7200C93E60 /* League.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +24,8 @@
 		1AEE3DD32CA5D47800C93E60 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1AEE3DD62CA5D47800C93E60 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1AEE3DD82CA5D47800C93E60 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1AEE3DEA2CA5F4EC00C93E60 /* APICaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICaller.swift; sourceTree = "<group>"; };
+		1AEE3DEC2CA6FC7200C93E60 /* League.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = League.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +58,7 @@
 		1AEE3DC92CA5D47500C93E60 /* Win-Football_News */ = {
 			isa = PBXGroup;
 			children = (
+				1AEE3DE82CA5F4B300C93E60 /* Model */,
 				1AEE3DCA2CA5D47500C93E60 /* AppDelegate.swift */,
 				1AEE3DCC2CA5D47500C93E60 /* SceneDelegate.swift */,
 				1AEE3DCE2CA5D47500C93E60 /* ViewController.swift */,
@@ -62,6 +67,23 @@
 				1AEE3DD82CA5D47800C93E60 /* Info.plist */,
 			);
 			path = "Win-Football_News";
+			sourceTree = "<group>";
+		};
+		1AEE3DE82CA5F4B300C93E60 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				1AEE3DE92CA5F4E000C93E60 /* APICaller */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		1AEE3DE92CA5F4E000C93E60 /* APICaller */ = {
+			isa = PBXGroup;
+			children = (
+				1AEE3DEA2CA5F4EC00C93E60 /* APICaller.swift */,
+				1AEE3DEC2CA6FC7200C93E60 /* League.swift */,
+			);
+			path = APICaller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,6 +159,8 @@
 				1AEE3DCF2CA5D47500C93E60 /* ViewController.swift in Sources */,
 				1AEE3DCB2CA5D47500C93E60 /* AppDelegate.swift in Sources */,
 				1AEE3DCD2CA5D47500C93E60 /* SceneDelegate.swift in Sources */,
+				1AEE3DED2CA6FC7200C93E60 /* League.swift in Sources */,
+				1AEE3DEB2CA5F4EC00C93E60 /* APICaller.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,6 +310,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -312,6 +337,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
