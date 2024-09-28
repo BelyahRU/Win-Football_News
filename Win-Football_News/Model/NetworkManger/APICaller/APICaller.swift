@@ -5,6 +5,13 @@ final class APICaller {
     static let shared = APICaller()
     private let apiKey = "83818a3718a84be5b58e7b34b614ed02"
     
+    var leagueConverter: [String: String] = ["PL": "PremierLeague",
+                                           "SA": "Seria A",
+                                           "BL1": "Bundesliga",
+                                           "PD": "LaLiga",
+                                           "CL": "Champions League",
+    ]
+    
     private init() {}
 
     private func fetchMatches(for league: LeagueIds, completion: @escaping ([Match]?) -> Void) {
@@ -39,7 +46,7 @@ final class APICaller {
                 // Добавляем идентификатор лиги к каждому матчу
                 matchesResponse.matches = matchesResponse.matches.map { match in
                     var updatedMatch = match
-                    updatedMatch.leagueId = league.rawValue
+                    updatedMatch.leagueId = self.leagueConverter[league.rawValue]!
                     return updatedMatch
                 }
 

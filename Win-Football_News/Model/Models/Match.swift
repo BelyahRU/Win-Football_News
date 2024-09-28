@@ -11,7 +11,7 @@ struct Match: Decodable {
     let group: String?
     let homeTeam: Team
     let awayTeam: Team
-    var leagueId: String? // Добавляем поле для хранения идентификатора лиги
+    var leagueId: String? 
 }
 
 
