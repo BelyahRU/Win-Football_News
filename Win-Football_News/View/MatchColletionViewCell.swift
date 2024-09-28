@@ -14,7 +14,7 @@ class MatchColletionViewCell: UICollectionViewCell {
     public let leagueNameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         return label
     }()
     
@@ -24,10 +24,50 @@ class MatchColletionViewCell: UICollectionViewCell {
         return view
     }()
     
+    private let leftSeparatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = Resources.Colors.blueColor
+        view.layer.cornerRadius = 2
+        return view
+    }()
+    
     public let timeLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = UIFont.systemFont(ofSize: 14)
+        label.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
+        label.textAlignment = .left
+        return label
+    }()
+    
+    public let dateLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textAlignment = .left
+        return label
+    }()
+    
+    public let flagLeagueImageView: UIImageView = {
+       let im = UIImageView()
+        im.contentMode = .scaleAspectFit
+        return im
+    }()
+    
+    public let team1Label: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.text = "Название команды 1"
+        label.textAlignment = .left
+        return label
+    }()
+    
+    public let team2Label: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.text = "Название команды 2"
+        label.textAlignment = .left
         return label
     }()
     
@@ -57,26 +97,71 @@ class MatchColletionViewCell: UICollectionViewCell {
         contentView.addSubview(whiteBackRoundedView)
         contentView.addSubview(leagueNameLabel)
         contentView.addSubview(separatorView)
+        contentView.addSubview(flagLeagueImageView)
+        contentView.addSubview(timeLabel)
+        contentView.addSubview(leftSeparatorView)
+        contentView.addSubview(team1Label)
+        contentView.addSubview(team2Label)
+        contentView.addSubview(dateLabel)
     }
     
     private func setupConstraints() {
         whiteBackRoundedView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        leagueNameLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(45)
-            make.top.equalToSuperview().offset(18)
-            make.height.equalTo(14)
-        }
         
         separatorView.snp.makeConstraints { make in
             make.height.equalTo(1)
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(leagueNameLabel.snp.bottom).offset(12)
+            make.top.equalToSuperview().offset(42)
+        }
+        
+        flagLeagueImageView.snp.makeConstraints { make in
+            make.width.equalTo(16)
+            make.height.equalTo(10)
+            make.leading.equalToSuperview().offset(21)
+            make.top.equalToSuperview().offset(20)
+        }
+        
+        leagueNameLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(45)
+            make.centerY.equalTo(flagLeagueImageView.snp.centerY)
+        }
+        
+        timeLabel.snp.makeConstraints { make in
+            make.leading.equalTo(flagLeagueImageView.snp.leading).offset(-2)
+            make.top.equalTo(separatorView.snp.bottom).offset(12)
+        }
+        
+        dateLabel.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-21)
+            make.centerY.equalTo(timeLabel.snp.centerY)
+        }
+        
+        leftSeparatorView.snp.makeConstraints { make in
+            make.width.equalTo(2)
+            make.height.equalTo(26)
+            make.leading.equalTo(flagLeagueImageView.snp.leading)
+            make.top.equalTo(timeLabel.snp.bottom).offset(10)
+        }
+        
+        team1Label.snp.makeConstraints { make in
+            make.top.equalTo(leftSeparatorView.snp.top).offset(-2)
+            make.leading.equalTo(leftSeparatorView.snp.trailing).offset(7)
+        }
+        
+        team2Label.snp.makeConstraints { make in
+            make.bottom.equalTo(leftSeparatorView.snp.bottom).offset(2)
+            make.leading.equalTo(leftSeparatorView.snp.trailing).offset(7)
         }
     }
     
-    public func setupText(text: String) {
-        leagueNameLabel.text = text
+    public func setupText(league: String, time: String, date: String, team1: String, team2: String) {
+        leagueNameLabel.text = league
+        flagLeagueImageView.image = UIImage(named: league)
+        timeLabel.text = time
+        dateLabel.text = date
+        team1Label.text = team1
+        team2Label.text = team2
     }
 }

@@ -5,7 +5,7 @@ final class APICaller {
     static let shared = APICaller()
     private let apiKey = "83818a3718a84be5b58e7b34b614ed02"
     
-    var leagueConverter: [String: String] = ["PL": "PremierLeague",
+    var leagueConverter: [String: String] = ["PL": "Premier League",
                                            "SA": "Seria A",
                                            "BL1": "Bundesliga",
                                            "PD": "LaLiga",

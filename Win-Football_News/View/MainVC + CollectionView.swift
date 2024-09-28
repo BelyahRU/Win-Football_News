@@ -28,8 +28,11 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MatchColletionViewCell.reuseId, for: indexPath) as? MatchColletionViewCell else {
             return UICollectionViewCell()
         }
-        let text = viewModel.getMatch(by: indexPath.row).leagueId ?? "none"
-        cell.setupText(text: text)
+        let match = viewModel.getMatch(by: indexPath.row)
+        let date = viewModel.formatDate(match.utcDate) ?? "dateError"
+        let time = viewModel.extractTime(from: match.utcDate) ?? "timeError"
+        
+        cell.setupText(league: match.leagueId ?? "", time: time,date: date, team1: match.homeTeam.name ?? "", team2: match.awayTeam.name ?? "")
         return cell
 
     }
