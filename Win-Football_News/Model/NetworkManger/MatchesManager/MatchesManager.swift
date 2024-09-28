@@ -12,6 +12,7 @@ final class MatchesManager {
     private var currentPage = 0
     private var currentSortOrder: MatchSortOrder = .ascending
     private var leagueCounter = false
+    private var currentLeague = "BL1"
 
     init(matches: [Match]) {
         self.allMatches = matches.sorted { $0.utcDate < $1.utcDate }
@@ -41,20 +42,21 @@ final class MatchesManager {
         }
     }
     
-    func loadMoreMatchesFrom(league: League) -> [Match] {
-        if leagueCounter == false {
+    func loadMoreMatchesFrom(leagueId: String) -> [Match] {
+        if leagueCounter == false || currentLeague != leagueId {
             currentPage = 0
             leagueCounter = true
+            currentLeague = leagueId
         }
         
         
-        let filteredMatches = allMatches.filter { $0.leagueId == league.id }
+        let filteredMatches = allMatches.filter { $0.leagueId == leagueId }
         
         let startIndex = currentPage * pageSize
         let endIndex = min(startIndex + pageSize, filteredMatches.count)
 
         guard startIndex < endIndex else {
-            print("No more matches to load for league \(league)")
+            print("No more matches to load for league \(leagueId)")
             return []
         }
 

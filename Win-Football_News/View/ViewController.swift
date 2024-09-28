@@ -1,20 +1,27 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+protocol MainViewModelDelegate: AnyObject {
+    func matchesLoaded()
+}
+
+class ViewController: UIViewController, MainViewModelDelegate {
+    
+    var viewModel: MainViewModel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        APICaller.shared.fetchAllMatches { matchesArray in
-            <#code#>
-        }
-        
+        setupViewModel()
     }
     
-    func printMatches() {
-        print()
+    func setupViewModel() {
+        viewModel = MainViewModel()
+        viewModel.delegate = self
     }
 
+    func matchesLoaded() {
+        print(viewModel.getNextTwentyMatches(with: .laLiga))
+    }
 
 }
 

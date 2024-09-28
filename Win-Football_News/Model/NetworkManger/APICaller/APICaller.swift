@@ -82,3 +82,7 @@ final class APICaller {
         }
     }
 }
+
+struct MatchesResponse: Decodable {
+    var matches: [Match]
+}

@@ -20,7 +20,6 @@
 		1AEE3DFF2CA7787700C93E60 /* Season.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEE3DFE2CA7787700C93E60 /* Season.swift */; };
 		1AEE3E082CA7796E00C93E60 /* APICaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEE3E042CA7796E00C93E60 /* APICaller.swift */; };
 		1AEE3E092CA7796E00C93E60 /* LeagueIds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEE3E052CA7796E00C93E60 /* LeagueIds.swift */; };
-		1AEE3E0A2CA7796E00C93E60 /* MatchesResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AEE3E062CA7796E00C93E60 /* MatchesResponse.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,7 +38,6 @@
 		1AEE3DFE2CA7787700C93E60 /* Season.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Season.swift; sourceTree = "<group>"; };
 		1AEE3E042CA7796E00C93E60 /* APICaller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APICaller.swift; sourceTree = "<group>"; };
 		1AEE3E052CA7796E00C93E60 /* LeagueIds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeagueIds.swift; sourceTree = "<group>"; };
-		1AEE3E062CA7796E00C93E60 /* MatchesResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchesResponse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,7 +156,6 @@
 			children = (
 				1AEE3E042CA7796E00C93E60 /* APICaller.swift */,
 				1AEE3E052CA7796E00C93E60 /* LeagueIds.swift */,
-				1AEE3E062CA7796E00C93E60 /* MatchesResponse.swift */,
 			);
 			path = APICaller;
 			sourceTree = "<group>";
@@ -241,7 +238,6 @@
 				1AEE3E082CA7796E00C93E60 /* APICaller.swift in Sources */,
 				1AEE3DFB2CA7781000C93E60 /* Match.swift in Sources */,
 				1AEE3DCD2CA5D47500C93E60 /* SceneDelegate.swift in Sources */,
-				1AEE3E0A2CA7796E00C93E60 /* MatchesResponse.swift in Sources */,
 				1AEE3DED2CA6FC7200C93E60 /* League.swift in Sources */,
 				1AEE3E092CA7796E00C93E60 /* LeagueIds.swift in Sources */,
 				1AEE3DF02CA7180E00C93E60 /* MatchesManager.swift in Sources */,
