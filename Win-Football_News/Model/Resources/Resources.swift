@@ -5,6 +5,8 @@ import UIKit
 enum Resources {
     
     enum Colors {
+        static let mainBackgroundColor = UIColor(red: 0x17 / 255.0, green: 0x18 / 255.0, blue: 0x27 / 255.0, alpha: 1.0)
+
         static let darkBlueColor = UIColor(red: 0x15 / 255.0, green: 0x22 / 255.0, blue: 0xD9 / 255.0, alpha: 1.0)
 
         static let blueColor = UIColor(red: 0x24 / 255.0, green: 0xAD / 255.0, blue: 0xF3 / 255.0, alpha: 1.0)
@@ -20,7 +22,7 @@ enum Resources {
         static let logoImage = "logoImage"
         
         enum Buttons {
-            static let filterButton = "filterButton"
+            static let filtersButton = "filtersButton"
             static let sortButton = "sortButton"
             static let reloadButton = "reloadButton"
         }

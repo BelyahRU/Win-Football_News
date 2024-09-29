@@ -12,6 +12,8 @@ struct Match: Decodable {
     let homeTeam: Team
     let awayTeam: Team
     var leagueId: String? 
+    var homeTeamLogo: Data?
+    var guestTeamLogo: Data?
 }
 
 

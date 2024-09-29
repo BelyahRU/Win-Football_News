@@ -3,22 +3,35 @@ import SnapKit
 
 class MainView: UIView {
     
-    
-    public let filterButton: UIButton = {
+    public let filtersButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .green
-        button.setTitle("Filter", for: .normal)
+        button.setImage(UIImage(named: Resources.Images.Buttons.filtersButton), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
     public let sortButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .red
-        button.setTitle("Sort", for: .normal)
+        button.setImage(UIImage(named: Resources.Images.Buttons.sortButton), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
+    
+    public let reloadButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: Resources.Images.Buttons.reloadButton), for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    public let logoImageView: UIImageView = {
+         let im = UIImageView()
+         im.contentMode = .scaleAspectFit
+         im.image = UIImage(named: Resources.Images.logoImage)
+         return im
+     }()
+    
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -32,28 +45,45 @@ class MainView: UIView {
     private func configure() {
         setupSubviews()
         setupConstraints()
+        setupUI()
+    }
+    
+    private func setupUI() {
+        self.backgroundColor = .clear
     }
     
     private func setupSubviews() {
-        addSubview(filterButton)
+        addSubview(logoImageView)
         addSubview(sortButton)
+        addSubview(filtersButton)
+        addSubview(reloadButton)
     }
     
     private func setupConstraints() {
-        filterButton.snp.makeConstraints { make in
-            make.width.equalTo(60)
-            make.height.equalTo(30)
-            make.top.equalToSuperview().offset(60)
-            make.trailing.equalToSuperview().offset(-20)
+        logoImageView.snp.makeConstraints { make in
+            make.width.equalTo(124)
+            make.height.equalTo(37.2)
+            make.leading.equalToSuperview().offset(17)
+            make.top.equalToSuperview().offset(65)
         }
+        
         
         sortButton.snp.makeConstraints { make in
-            make.width.equalTo(60)
-            make.height.equalTo(30)
-            make.top.equalToSuperview().offset(60)
-            make.leading.equalToSuperview().offset(20)
+            make.size.equalTo(28)
+            make.top.equalToSuperview().offset(70)
+            make.trailing.equalToSuperview().offset(-14)
         }
         
+        filtersButton.snp.makeConstraints { make in
+            make.size.equalTo(28)
+            make.top.equalToSuperview().offset(70)
+            make.trailing.equalTo(sortButton.snp.leading).offset(-17)
+        }
         
+        reloadButton.snp.makeConstraints { make in
+            make.size.equalTo(28)
+            make.top.equalToSuperview().offset(70)
+            make.trailing.equalTo(filtersButton.snp.leading).offset(-17)
+        }
     }
 }

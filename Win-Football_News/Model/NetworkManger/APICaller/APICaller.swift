@@ -43,14 +43,12 @@ final class APICaller {
                 let decoder = JSONDecoder()
                 var matchesResponse = try decoder.decode(MatchesResponse.self, from: data)
                 
-                // Добавляем идентификатор лиги к каждому матчу
                 matchesResponse.matches = matchesResponse.matches.map { match in
                     var updatedMatch = match
                     updatedMatch.leagueId = self.leagueConverter[league.rawValue]!
                     return updatedMatch
                 }
 
-                // Фильтруем только будущие матчи
                 let upcomingMatches = matchesResponse.matches.filter { match in
                     let dateFormatter = DateFormatter()
                     dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"

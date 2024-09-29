@@ -71,6 +71,18 @@ class MatchColletionViewCell: UICollectionViewCell {
         return label
     }()
     
+    public let logo1ImageView: UIImageView = {
+        let im = UIImageView()
+         im.contentMode = .scaleAspectFit
+         return im
+    }()
+    
+    public let logo2ImageView: UIImageView = {
+        let im = UIImageView()
+         im.contentMode = .scaleAspectFit
+         return im
+    }()
+    
     static let reuseId = "MatchColletionViewCell"
     
     override init(frame: CGRect) {
@@ -85,6 +97,12 @@ class MatchColletionViewCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         //ADD
+        leagueNameLabel.text = ""
+        flagLeagueImageView.image = nil
+        timeLabel.text = ""
+        dateLabel.text = ""
+        team1Label.text = ""
+        team2Label.text = ""
     }
     
     private func configure() {
@@ -100,7 +118,9 @@ class MatchColletionViewCell: UICollectionViewCell {
         contentView.addSubview(flagLeagueImageView)
         contentView.addSubview(timeLabel)
         contentView.addSubview(leftSeparatorView)
+        contentView.addSubview(logo1ImageView)
         contentView.addSubview(team1Label)
+        contentView.addSubview(logo2ImageView)
         contentView.addSubview(team2Label)
         contentView.addSubview(dateLabel)
     }
@@ -130,7 +150,7 @@ class MatchColletionViewCell: UICollectionViewCell {
         
         timeLabel.snp.makeConstraints { make in
             make.leading.equalTo(flagLeagueImageView.snp.leading).offset(-2)
-            make.top.equalTo(separatorView.snp.bottom).offset(12)
+            make.top.equalTo(separatorView.snp.bottom).offset(8)
         }
         
         dateLabel.snp.makeConstraints { make in
@@ -140,28 +160,53 @@ class MatchColletionViewCell: UICollectionViewCell {
         
         leftSeparatorView.snp.makeConstraints { make in
             make.width.equalTo(2)
-            make.height.equalTo(26)
+            make.height.equalTo(32)
             make.leading.equalTo(flagLeagueImageView.snp.leading)
             make.top.equalTo(timeLabel.snp.bottom).offset(10)
         }
         
+        
         team1Label.snp.makeConstraints { make in
-            make.top.equalTo(leftSeparatorView.snp.top).offset(-2)
-            make.leading.equalTo(leftSeparatorView.snp.trailing).offset(7)
+            make.top.equalTo(leftSeparatorView.snp.top)
+            make.leading.equalTo(leftSeparatorView.snp.trailing).offset(30)
         }
         
+        
         team2Label.snp.makeConstraints { make in
-            make.bottom.equalTo(leftSeparatorView.snp.bottom).offset(2)
+            make.bottom.equalTo(leftSeparatorView.snp.bottom)
+            make.leading.equalTo(leftSeparatorView.snp.trailing).offset(30)
+        }
+        
+        logo1ImageView.snp.makeConstraints { make in
+            make.centerY.equalTo(team1Label.snp.centerY)
             make.leading.equalTo(leftSeparatorView.snp.trailing).offset(7)
+            make.size.equalTo(16)
+        }
+        
+        logo2ImageView.snp.makeConstraints { make in
+            make.centerY.equalTo(team2Label.snp.centerY)
+            make.leading.equalTo(leftSeparatorView.snp.trailing).offset(7)
+            make.size.equalTo(16)
         }
     }
     
-    public func setupText(league: String, time: String, date: String, team1: String, team2: String) {
+    public func setupText(league: String, time: String, date: String, team1: String, team2: String, logo1Data: Data?, logo2Data: Data?) {
         leagueNameLabel.text = league
         flagLeagueImageView.image = UIImage(named: league)
         timeLabel.text = time
         dateLabel.text = date
         team1Label.text = team1
         team2Label.text = team2
+        if let logo1Data = logo1Data {
+            logo1ImageView.image = UIImage(data: logo1Data)
+            
+            print(logo1Data)
+        }
+        
+        if let logo2Data = logo2Data {
+            //
+            logo2ImageView.image = UIImage(data: logo2Data)
+            print(logo2Data)
+        }
     }
 }

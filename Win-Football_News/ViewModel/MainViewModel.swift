@@ -14,31 +14,43 @@ class MainViewModel {
     private var matchesManager: MatchesManager?
     private var apiCaller = APICaller.shared
     
-    private(set) var matches: [Match] = []
+    var matches: [Match] = []
     
     init() {
         apiCaller.fetchAllMatches { [weak self] matchesArray in
             guard let self = self else { return }
             self.matchesManager = MatchesManager(matches: matchesArray)
-            self.matchesLoaded()
-            self.getNextTwentyMatches(sortedBy: .ascending)
+            self.getNextTwentyMatches(sortedBy: .ascending) {
+                self.matchesLoaded()
+            }
         }
     }
     
     private func matchesLoaded() {
-        delegate?.matchesLoaded()
+        DispatchQueue.main.async {
+            self.delegate?.matchesLoaded()
+        }
     }
     
-    public func getNextTwentyMatches(sortedBy sortOrder: MatchSortOrder){
-        matches = matchesManager?.loadMoreMatches(sortedBy: sortOrder) ?? []
+    public func getNextTwentyMatches(sortedBy sortOrder: MatchSortOrder, completion: @escaping () -> Void) {
+        matchesManager?.loadMoreMatches(sortedBy: sortOrder) { [weak self] loadedMatches in
+            self?.matches = loadedMatches
+            completion()
+        }
+    }
+
+    public func getNextTwentyMatchesWith(leagueId: LeagueIds, sortedBy sortOrder: MatchSortOrder, completion: @escaping ([Match]) -> Void) {
+        matchesManager?.loadMoreMatchesFrom(leagueId: leagueId.rawValue, sortedBy: sortOrder) { [weak self] loadedMatches in
+            self?.matches = loadedMatches
+            completion(loadedMatches)
+        }
     }
     
-    public func getNextTwentyMatchesWith(leagueId: LeagueIds, sortedBy sortOrder: MatchSortOrder){
-        matches = matchesManager?.loadMoreMatchesFrom(leagueId: leagueId.rawValue, sortedBy: sortOrder) ?? []
-    }
-    
-    public func getMatch(by index: Int) -> Match {
-        return matches[index]
+    public func getMatch(by index: Int) -> Match? {
+        if index >= 0 && index < matches.count {
+            return matches[index]
+        }
+        return nil
     }
     
     func extractTime(from dateTimeString: String) -> String? {
@@ -57,17 +69,17 @@ class MainViewModel {
     
 
     func formatDate(_ dateTimeString: String) -> String? {
-            let inputFormatter = DateFormatter()
-            inputFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-            inputFormatter.locale = Locale(identifier: "en_US_POSIX")
-            
-            guard let date = inputFormatter.date(from: dateTimeString) else { return nil }
-            
-            let outputFormatter = DateFormatter()
-            outputFormatter.locale = Locale(identifier: "en_US")
-            outputFormatter.dateFormat = "d MMM yyyy, EEE"
-            
-            return outputFormatter.string(from: date)
+        let inputFormatter = DateFormatter()
+        inputFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        inputFormatter.locale = Locale(identifier: "en_US_POSIX")
+        
+        guard let date = inputFormatter.date(from: dateTimeString) else { return nil }
+        
+        let outputFormatter = DateFormatter()
+        outputFormatter.locale = Locale(identifier: "en_US")
+        outputFormatter.dateFormat = "d MMM yyyy, EEE"
+        
+        return outputFormatter.string(from: date)
     }
 
 }
