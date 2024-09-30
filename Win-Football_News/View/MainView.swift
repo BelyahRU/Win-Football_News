@@ -17,13 +17,6 @@ class MainView: UIView {
         return button
     }()
     
-    public let reloadButton: UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(named: Resources.Images.Buttons.reloadButton), for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
     public let logoImageView: UIImageView = {
          let im = UIImageView()
          im.contentMode = .scaleAspectFit
@@ -56,7 +49,6 @@ class MainView: UIView {
         addSubview(logoImageView)
         addSubview(sortButton)
         addSubview(filtersButton)
-        addSubview(reloadButton)
     }
     
     private func setupConstraints() {
@@ -80,10 +72,5 @@ class MainView: UIView {
             make.trailing.equalTo(sortButton.snp.leading).offset(-17)
         }
         
-        reloadButton.snp.makeConstraints { make in
-            make.size.equalTo(28)
-            make.top.equalToSuperview().offset(70)
-            make.trailing.equalTo(filtersButton.snp.leading).offset(-17)
-        }
     }
 }

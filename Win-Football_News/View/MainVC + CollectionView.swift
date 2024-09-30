@@ -27,9 +27,12 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MatchColletionViewCell.reuseId, for: indexPath) as? MatchColletionViewCell else {
+            print("dequeReusableCellError")
             return UICollectionViewCell()
         }
-        guard let match = viewModel.getMatch(by: indexPath.row) else { return MatchColletionViewCell() }
+        guard let match = viewModel.getMatch(by: indexPath.row) else { 
+            print("matchError")
+            return MatchColletionViewCell() }
         let date = viewModel.formatDate(match.utcDate) ?? "dateError"
         let time = viewModel.extractTime(from: match.utcDate) ?? "timeError"
         let logo1Data = match.homeTeamLogo

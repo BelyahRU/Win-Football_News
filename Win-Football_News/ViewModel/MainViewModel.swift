@@ -7,6 +7,8 @@ enum LeagueIds: String, CaseIterable {
     case championsLeague = "CL"
 }
 
+
+
 class MainViewModel {
     
     weak var delegate: MainViewController?
@@ -17,13 +19,15 @@ class MainViewModel {
     var matches: [Match] = []
     
     init() {
-        apiCaller.fetchAllMatches { [weak self] matchesArray in
-            guard let self = self else { return }
-            self.matchesManager = MatchesManager(matches: matchesArray)
-            self.getNextTwentyMatches(sortedBy: .ascending) {
-                self.matchesLoaded()
-            }
-        }
+//        apiCaller.fetchAllMatches { [weak self] matchesArray in
+//            guard let self = self else { return }
+//            self.matchesManager = MatchesManager(matches: matchesArray)
+//            self.getNextTwentyMatches(sortedBy: .ascending) {
+//                print("matches loaded")
+//                print(self.matches)
+//                self.matchesLoaded()
+//            }
+//        }
     }
     
     private func matchesLoaded() {
@@ -48,8 +52,18 @@ class MainViewModel {
     
     public func getMatch(by index: Int) -> Match? {
         if index >= 0 && index < matches.count {
+            print("MATCH: ")
+            print("MATCH: ")
+            print("MATCH: ")
+            print("MATCH: ")
+            print(matches[index], index)
             return matches[index]
         }
+        print("returned nil")
+        print("returned nil")
+        print("returned nil")
+        print("returned nil")
+        print(matches)
         return nil
     }
     

@@ -26,6 +26,13 @@ class MainViewController: UIViewController, MainViewModelDelegate {
         collectionView.backgroundColor = .clear
         return collectionView
     }()
+    
+    public let reloadButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: Resources.Images.Buttons.reloadButton), for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,11 +69,11 @@ class MainViewController: UIViewController, MainViewModelDelegate {
         activityIndicator.stopAnimating()
     }
     
+    //MARK: - MainViewModelDelegate
     func matchesLoaded() {
         stopLoadingAnimation()
-        
         //mainView not added
-        if mainView.widthAnchor != view.widthAnchor {
+        if !mainView.isDescendant(of: view) {
             view.addSubview(mainView)
             mainView.translatesAutoresizingMaskIntoConstraints = false
             view.backgroundColor = Resources.Colors.mainBackgroundColor
@@ -84,9 +91,16 @@ class MainViewController: UIViewController, MainViewModelDelegate {
                 make.bottom.equalToSuperview()
                 make.top.equalTo(mainView.logoImageView.snp.bottom).offset(28)
             }
-        //added before
+            view.addSubview(reloadButton)
+            reloadButton.snp.makeConstraints { make in
+                make.size.equalTo(28)
+                make.top.equalToSuperview().offset(70)
+                make.trailing.equalTo(mainView.filtersButton.snp.leading).offset(-17)
+            }
         } else {
+            collectionView.scrollsToTop = true
             collectionView.reloadData()
+            collectionView.isHidden = false
         }
         
     }

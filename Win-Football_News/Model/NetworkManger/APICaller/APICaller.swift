@@ -14,12 +14,10 @@ final class APICaller {
     
     private init() {}
 
-    private func fetchMatches(for league: LeagueIds, completion: @escaping ([Match]?) -> Void) {
+    private func fetchMatches(for league: LeagueIds, completion: @escaping (Result<[Match], Error>) -> Void) {
         let urlString = "https://api.football-data.org/v4/competitions/\(league.rawValue)/matches"
-        
         guard let url = URL(string: urlString) else {
-            print("Invalid URL")
-            completion(nil)
+            completion(.failure(APIError.invalidURL(league: league)))
             return
         }
 
@@ -28,21 +26,18 @@ final class APICaller {
 
         URLSession.shared.dataTask(with: request) { data, _, error in
             if let error = error {
-                print("Error fetching matches for league \(league): \(error)")
-                completion(nil)
+                completion(.failure(APIError.fetchingMatchesFailed(league: league, error: error)))
                 return
             }
 
             guard let data = data else {
-                print("No data received for league \(league)")
-                completion(nil)
+                completion(.failure(APIError.noData(league: league)))
                 return
             }
 
             do {
                 let decoder = JSONDecoder()
                 var matchesResponse = try decoder.decode(MatchesResponse.self, from: data)
-                
                 matchesResponse.matches = matchesResponse.matches.map { match in
                     var updatedMatch = match
                     updatedMatch.leagueId = self.leagueConverter[league.rawValue]!
@@ -59,31 +54,39 @@ final class APICaller {
                     }
                     return matchDate > Date()
                 }
-                completion(upcomingMatches)
+                completion(.success(upcomingMatches))
             } catch {
-                print("Error decoding JSON for league \(league): \(error)")
-                completion(nil)
+                completion(.failure(APIError.decodingFailed(league: league, error: error)))
             }
         }.resume()
     }
 
 
-    func fetchAllMatches(completion: @escaping ([Match]) -> Void) {
+    func fetchAllMatches(completion: @escaping (Result<[Match], Error>) -> Void) {
         let dispatchGroup = DispatchGroup()
         var combinedMatches = [Match]()
-
+        var errors = [Error]()
+        
         for league in LeagueIds.allCases {
             dispatchGroup.enter()
-            fetchMatches(for: league) { matches in
-                if let matches = matches {
-                    combinedMatches.append(contentsOf: matches)
-                }
-                dispatchGroup.leave()
+            fetchMatches(for: league) { result in
+                switch result {
+                    case .success(let matches):
+                        combinedMatches.append(contentsOf: matches)
+                    case .failure(let error):
+                        errors.append(error)
+                    }
+                    dispatchGroup.leave()
             }
+            
         }
 
         dispatchGroup.notify(queue: .main) {
-            completion(combinedMatches)
+            if errors.isEmpty {
+                completion(.success(combinedMatches))
+            } else {
+                completion(.failure(APIError.multipleErrors(errors: errors)))
+            }
         }
     }
 }

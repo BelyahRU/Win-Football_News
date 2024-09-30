@@ -7,7 +7,7 @@ extension MainViewController {
     func setupButtons() {
         mainView.sortButton.addTarget(self, action: #selector(sortPressed), for: .touchUpInside)
         mainView.filtersButton.addTarget(self, action: #selector(filterPressed), for: .touchUpInside)
-        mainView.reloadButton.addTarget(self, action: #selector(reloadPressed), for: .touchUpInside)
+        reloadButton.addTarget(self, action: #selector(reloadPressed), for: .touchUpInside)
     }
     
     @objc
@@ -23,6 +23,7 @@ extension MainViewController {
     @objc
     func reloadPressed() {
         startLoadingAnimation()
+        collectionView.isHidden = true
         setupViewModel()
         print("adsf")
     }
