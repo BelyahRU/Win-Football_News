@@ -1,4 +1,23 @@
 import Foundation
+enum LogoFetcherError: Error, CustomStringConvertible {
+    case invalidURL(String)
+    case networkError(Error)
+    case invalidResponse(statusCode: Int)
+    case noDataReceived
+
+    var description: String {
+        switch self {
+        case .invalidURL(let urlString):
+            return "Invalid URL: \(urlString)"
+        case .networkError(let error):
+            return "Network error occurred: \(error.localizedDescription)"
+        case .invalidResponse(let statusCode):
+            return "Received invalid response with status code: \(statusCode)"
+        case .noDataReceived:
+            return "No data received from the server."
+        }
+    }
+}
 
 final class LogoFetcher {
     
@@ -8,29 +27,34 @@ final class LogoFetcher {
     
     private init() {}
     
-    func fetchLogo(for teamId: Int, completion: @escaping (Data?) -> Void) {
-        let urlString = "\(logoBaseURL)\(teamId).png"
-        
-        guard let imageUrl = URL(string: urlString) else {
-            completion(nil)
-            return
-        }
-        
-        let request = URLRequest(url: imageUrl)
-        let task = URLSession.shared.dataTask(with: request) {  data, response, error in
-            if let error = error {
-                print("Error fetching matches for team \(teamId): \(error)")
-                completion(nil)
+    func fetchLogo(for teamId: Int, completion: @escaping (Result<Data, LogoFetcherError>) -> Void) {
+            let urlString = "\(logoBaseURL)\(teamId).png"
+            
+            guard let imageUrl = URL(string: urlString) else {
+                completion(.failure(.invalidURL(urlString)))
                 return
             }
+            
+            let request = URLRequest(url: imageUrl)
+            let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                if let error = error {
+                    completion(.failure(.networkError(error)))
+                    return
+                }
 
-            guard let data = data else {
-                print("No data received for team \(teamId)")
-                completion(nil)
-                return
+                guard let httpResponse = response as? HTTPURLResponse, 200...299 ~= httpResponse.statusCode else {
+                    let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
+                    completion(.failure(.invalidResponse(statusCode: statusCode)))
+                    return
+                }
+
+                guard let data = data else {
+                    completion(.failure(.noDataReceived))
+                    return
+                }
+                
+                completion(.success(data))
             }
-            completion(data)
+            task.resume()
         }
-        task.resume()
-    }
 }

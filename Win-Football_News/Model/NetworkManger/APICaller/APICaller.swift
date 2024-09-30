@@ -14,7 +14,7 @@ final class APICaller {
     
     private init() {}
 
-    private func fetchMatches(for league: LeagueIds, completion: @escaping (Result<[Match], Error>) -> Void) {
+    private func fetchMatches(for league: LeagueIds, completion: @escaping (Result<[Match?], Error>) -> Void) {
         let urlString = "https://api.football-data.org/v4/competitions/\(league.rawValue)/matches"
         guard let url = URL(string: urlString) else {
             completion(.failure(APIError.invalidURL(league: league)))
@@ -31,23 +31,31 @@ final class APICaller {
             }
 
             guard let data = data else {
+                
                 completion(.failure(APIError.noData(league: league)))
                 return
             }
 
             do {
                 let decoder = JSONDecoder()
+                print(String(data: data, encoding: .utf8))
                 var matchesResponse = try decoder.decode(MatchesResponse.self, from: data)
-                matchesResponse.matches = matchesResponse.matches.map { match in
+                
+                guard let matches = matchesResponse.matches else {
+                    completion(.failure(APIError.decodingFailed(league: league, error: NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "No matches available"]))))
+                    return
+                }
+                matchesResponse.matches = matches.map { match in
                     var updatedMatch = match
                     updatedMatch.leagueId = self.leagueConverter[league.rawValue]!
                     return updatedMatch
                 }
 
-                let upcomingMatches = matchesResponse.matches.filter { match in
+                let upcomingMatches = matchesResponse.matches!.filter { match in
                     let dateFormatter = DateFormatter()
                     dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
                     dateFormatter.timeZone = TimeZone(identifier: "UTC")
+
 
                     guard let matchDate = dateFormatter.date(from: match.utcDate) else {
                         return false
@@ -69,16 +77,18 @@ final class APICaller {
         
         for league in LeagueIds.allCases {
             dispatchGroup.enter()
+            
             fetchMatches(for: league) { result in
                 switch result {
-                    case .success(let matches):
-                        combinedMatches.append(contentsOf: matches)
-                    case .failure(let error):
-                        errors.append(error)
-                    }
-                    dispatchGroup.leave()
+                case .success(let matches):
+                    let nonNilMatches = matches.compactMap { $0 }
+                    combinedMatches.append(contentsOf: nonNilMatches)
+                case .failure(let error):
+                    errors.append(error)
+                }
+                
+                dispatchGroup.leave()
             }
-            
         }
 
         dispatchGroup.notify(queue: .main) {
@@ -92,5 +102,13 @@ final class APICaller {
 }
 
 struct MatchesResponse: Decodable {
-    var matches: [Match]
+    var matches: [Match]?
+    enum CodingKeys: String, CodingKey {
+            case matches
+        }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.matches = try container.decodeIfPresent([Match].self, forKey: .matches)
+    }
 }

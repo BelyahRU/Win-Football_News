@@ -104,4 +104,9 @@ class MainViewController: UIViewController, MainViewModelDelegate {
         }
         
     }
+    
+    func showError(message: String) {
+        stopLoadingAnimation()
+        ErrorHandler.shared.showErrorAlert(message: message, viewController: self)
+    }
 }

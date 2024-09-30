@@ -24,7 +24,8 @@ extension MainViewController {
     func reloadPressed() {
         startLoadingAnimation()
         collectionView.isHidden = true
-        setupViewModel()
-        print("adsf")
+        viewModel.reloadData {
+            print("reloaded")
+        }
     }
 }

@@ -19,15 +19,22 @@ class MainViewModel {
     var matches: [Match] = []
     
     init() {
-//        apiCaller.fetchAllMatches { [weak self] matchesArray in
-//            guard let self = self else { return }
-//            self.matchesManager = MatchesManager(matches: matchesArray)
-//            self.getNextTwentyMatches(sortedBy: .ascending) {
-//                print("matches loaded")
-//                print(self.matches)
-//                self.matchesLoaded()
-//            }
-//        }
+        self.matchesManager = MatchesManager(completion: { result in
+            switch result {
+            case .success():
+                self.getNextTwentyMatches(sortedBy: .ascending) {
+                    print("matches loaded")
+                    if self.matches.count != 20 {
+                        print("Error")
+                    } else {
+                        self.matchesLoaded()
+                    }
+                }
+                print("OK")
+            case .failure(let error):
+                print("Error \(error)")
+            }
+        })
     }
     
     private func matchesLoaded() {
@@ -36,35 +43,62 @@ class MainViewModel {
         }
     }
     
-    public func getNextTwentyMatches(sortedBy sortOrder: MatchSortOrder, completion: @escaping () -> Void) {
-        matchesManager?.loadMoreMatches(sortedBy: sortOrder) { [weak self] loadedMatches in
-            self?.matches = loadedMatches
-            completion()
-        }
-    }
-
-    public func getNextTwentyMatchesWith(leagueId: LeagueIds, sortedBy sortOrder: MatchSortOrder, completion: @escaping ([Match]) -> Void) {
-        matchesManager?.loadMoreMatchesFrom(leagueId: leagueId.rawValue, sortedBy: sortOrder) { [weak self] loadedMatches in
-            self?.matches = loadedMatches
-            completion(loadedMatches)
+    // Метод для сброса и перезагрузки данных
+    public func reloadData(completion: @escaping () -> Void) {
+        matchesManager?.resetCurrentPage()  // Сброс currentPage в 0
+        matchesManager?.reloadMatches { [weak self] result in
+            switch result {
+            case .success:
+                self?.getNextTwentyMatches(sortedBy: .ascending) {
+                    print("Data reloaded successfully")
+                    self?.matchesLoaded()
+                    completion()
+                }
+            case .failure(let error):
+                self?.handleError(error)
+            }
         }
     }
     
-    public func getMatch(by index: Int) -> Match? {
-        if index >= 0 && index < matches.count {
-            print("MATCH: ")
-            print("MATCH: ")
-            print("MATCH: ")
-            print("MATCH: ")
-            print(matches[index], index)
-            return matches[index]
+    // Функция для загрузки следующих 20 матчей
+    public func getNextTwentyMatches(sortedBy sortOrder: MatchSortOrder, completion: @escaping () -> Void) {
+        matchesManager?.loadMoreMatches(sortedBy: sortOrder) { [weak self] result in
+            switch result {
+            case .success(let loadedMatches):
+                self?.matches = loadedMatches
+                completion()
+            case .failure(let error):
+                self?.handleError(error)
+                completion()
+            }
         }
-        print("returned nil")
-        print("returned nil")
-        print("returned nil")
-        print("returned nil")
-        print(matches)
-        return nil
+    }
+
+    // Функция для загрузки матчей по лиге
+    public func getNextTwentyMatchesWith(leagueId: LeagueIds, sortedBy sortOrder: MatchSortOrder, completion: @escaping ([Match]) -> Void) {
+        matchesManager?.loadMoreMatchesFrom(leagueId: leagueId.rawValue, sortedBy: sortOrder) { [weak self] result in
+            switch result {
+            case .success(let loadedMatches):
+                self?.matches = loadedMatches
+                completion(loadedMatches)
+            case .failure(let error):
+                self?.handleError(error)
+                completion([])
+            }
+        }
+    }
+    
+    // Получение конкретного матча по индексу
+    public func getMatch(by index: Int) -> Match? {
+        guard index >= 0 && index < matches.count else { return nil }
+        return matches[index]
+    }
+    
+    private func handleError(_ error: Error) {
+        DispatchQueue.main.async {
+            // Сообщение делегату или обработка ошибки в интерфейсе
+            self.delegate?.showError(message: "Failed to load data: \(error.localizedDescription)")
+        }
     }
     
     func extractTime(from dateTimeString: String) -> String? {
