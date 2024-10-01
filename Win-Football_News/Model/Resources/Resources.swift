@@ -20,11 +20,13 @@ enum Resources {
     
     enum Images {
         static let logoImage = "logoImage"
+        static let selectedImage = "selectedImage"
         
         enum Buttons {
             static let filtersButton = "filtersButton"
             static let sortButton = "sortButton"
             static let reloadButton = "reloadButton"
+            static let closeButton = "closeButton"
         }
     }
 }

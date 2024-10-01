@@ -10,6 +10,13 @@ class MainViewController: UIViewController, MainViewModelDelegate {
     
     var viewModel: MainViewModel!
     var mainView = MainView()
+    var sortView = SortView()
+    var filterView = FilterView()
+    var currentSort = 0
+    var filterShowed = false
+    var sortShowed = false
+    var currentTournament = ""
+    var showMoreButtonVisible = false
     
     // Объявляем индикатор активности
     private let activityIndicator: UIActivityIndicatorView = {
@@ -27,9 +34,34 @@ class MainViewController: UIViewController, MainViewModelDelegate {
         return collectionView
     }()
     
-    public let reloadButton: UIButton = {
+    public let footerView: UIView = {
+           let view = UIView()
+           let button = UIButton()
+           button.setTitle("Load More", for: .normal)
+           button.setTitleColor(.white, for: .normal)
+           button.backgroundColor = Resources.Colors.darkBlueColor
+           button.layer.cornerRadius = 10
+           button.addTarget(self, action: #selector(loadMoreCells), for: .touchUpInside)
+           button.translatesAutoresizingMaskIntoConstraints = false
+           view.addSubview(button)
+           view.isHidden = true // Скрываем кнопку по умолчанию
+           button.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+           button.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+           button.heightAnchor.constraint(equalToConstant: 47).isActive = true
+           button.widthAnchor.constraint(equalToConstant: 209).isActive = true
+           return view
+       }()
+    
+    public let filterButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: Resources.Images.Buttons.reloadButton), for: .normal)
+        button.setImage(UIImage(named: Resources.Images.Buttons.filtersButton), for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    public let sortButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: Resources.Images.Buttons.sortButton), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -91,11 +123,17 @@ class MainViewController: UIViewController, MainViewModelDelegate {
                 make.bottom.equalToSuperview()
                 make.top.equalTo(mainView.logoImageView.snp.bottom).offset(28)
             }
-            view.addSubview(reloadButton)
-            reloadButton.snp.makeConstraints { make in
+            view.addSubview(sortButton)
+            sortButton.snp.makeConstraints { make in
                 make.size.equalTo(28)
                 make.top.equalToSuperview().offset(70)
-                make.trailing.equalTo(mainView.filtersButton.snp.leading).offset(-17)
+                make.trailing.equalToSuperview().offset(-17)
+            }
+            view.addSubview(filterButton)
+            filterButton.snp.makeConstraints { make in
+                make.size.equalTo(28)
+                make.top.equalToSuperview().offset(70)
+                make.trailing.equalTo(sortButton.snp.leading).offset(-17)
             }
         } else {
             collectionView.scrollsToTop = true

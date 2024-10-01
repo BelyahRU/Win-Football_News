@@ -18,6 +18,7 @@ final class MatchesManager {
     private var currentPage = 0
     private var currentSortOrder: MatchSortOrder = .ascending
     private var currentLeague: String?
+    private var currentMatches: [Match] = []
 
     init(completion: @escaping (Result<Void, MatchesManagerError>) -> Void) {
         // Загружаем данные при инициализации
@@ -49,10 +50,12 @@ final class MatchesManager {
 
     func loadMoreMatches(sortedBy order: MatchSortOrder, completion: @escaping (Result<[Match], MatchesManagerError>) -> Void) {
         updatePaginationSettings(for: nil, sortedBy: order)
+        
         loadPaginatedMatches(from: allMatches, sortedBy: order, completion: completion)
     }
 
     func loadMoreMatchesFrom(leagueId: String, sortedBy order: MatchSortOrder, completion: @escaping (Result<[Match], MatchesManagerError>) -> Void) {
+        
         updatePaginationSettings(for: leagueId, sortedBy: order)
         let filteredMatches = allMatches.filter { $0.leagueId == leagueId }
         loadPaginatedMatches(from: filteredMatches, sortedBy: order, completion: completion)
@@ -67,6 +70,7 @@ final class MatchesManager {
             currentPage = 0
             currentSortOrder = order
             currentLeague = leagueId
+            currentMatches = []
         }
     }
 
@@ -89,9 +93,9 @@ final class MatchesManager {
         }
 
         currentPage += 1
-        let paginatedMatches = Array(matches[startIndex..<endIndex])
-
-        loadLogosSequentially(matches: paginatedMatches, index: 0) { result in
+//        let paginatedMatches = Array(matches[startIndex..<endIndex])
+        currentMatches += Array(matches[startIndex..<endIndex])
+        loadLogosSequentially(matches: currentMatches, index: 0) { result in
             switch result {
             case .success(let updatedMatches):
                 completion(.success(order == .ascending ? updatedMatches : updatedMatches.reversed()))
@@ -104,13 +108,13 @@ final class MatchesManager {
     private func loadLogosSequentially(matches: [Match], index: Int, completion: @escaping (Result<[Match], MatchesManagerError>) -> Void) {
         var matches = matches
         guard index < matches.count else {
+            // Завершить, когда все матчи обработаны
             completion(.success(matches))
             return
         }
 
         let match = matches[index]
         let group = DispatchGroup()
-        var errorOccurred: MatchesManagerError?
 
         group.enter()
         LogoFetcher.shared.fetchLogo(for: match.homeTeam.id ?? 0) { result in
@@ -119,8 +123,9 @@ final class MatchesManager {
                 if let matchIndex = matches.firstIndex(where: { $0.id == match.id }) {
                     matches[matchIndex].homeTeamLogo = data
                 }
-            case .failure(let error):
-                errorOccurred = .logoFetchError(teamId: match.homeTeam.id ?? 0)
+            case .failure:
+                // Логотип не найден, просто не добавляем его
+                print("Home team logo not found for match: \(match)")
             }
             group.leave()
         }
@@ -132,20 +137,19 @@ final class MatchesManager {
                 if let matchIndex = matches.firstIndex(where: { $0.id == match.id }) {
                     matches[matchIndex].guestTeamLogo = data
                 }
-            case .failure(let error):
-                errorOccurred = .logoFetchError(teamId: match.awayTeam.id ?? 0)
+            case .failure:
+                // Логотип не найден, просто не добавляем его
+                print("Away team logo not found for match: \(match)")
             }
             group.leave()
         }
 
         group.notify(queue: .main) {
-            if let error = errorOccurred {
-                completion(.failure(error))
-            } else {
-                self.loadLogosSequentially(matches: matches, index: index + 1, completion: completion)
-            }
+            // Продолжить с обработкой следующего матча
+            self.loadLogosSequentially(matches: matches, index: index + 1, completion: completion)
         }
     }
+
 
     // Метод для загрузки матчей с помощью APICaller
     private func loadMatchesFromAPI(completion: @escaping (Result<[Match], Error>) -> Void) {

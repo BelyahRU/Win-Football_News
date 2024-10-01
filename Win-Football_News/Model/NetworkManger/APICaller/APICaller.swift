@@ -81,8 +81,16 @@ final class APICaller {
             fetchMatches(for: league) { result in
                 switch result {
                 case .success(let matches):
-                    let nonNilMatches = matches.compactMap { $0 }
-                    combinedMatches.append(contentsOf: nonNilMatches)
+                    let filteredMatches = matches.compactMap { match -> Match? in
+                        guard let match = match else { return nil }
+                        if match.id != 524120 {
+                            return match
+                        } else {
+                            return nil
+                        }
+
+                    }
+                    combinedMatches.append(contentsOf: filteredMatches)
                 case .failure(let error):
                     errors.append(error)
                 }

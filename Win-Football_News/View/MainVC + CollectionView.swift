@@ -9,10 +9,11 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
         collectionView.delegate = self
         collectionView.showsVerticalScrollIndicator = false
         collectionView.register(MatchColletionViewCell.self, forCellWithReuseIdentifier: MatchColletionViewCell.reuseId)
+        collectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "footer")
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        20
+        viewModel.matches.count
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -41,4 +42,77 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
         return cell
 
     }
+    
+    // Добавляем футер в CollectionView
+        func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+            if kind == UICollectionView.elementKindSectionFooter {
+                let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "footer", for: indexPath)
+                footer.addSubview(footerView)
+                footerView.frame = footer.bounds
+                footerView.isHidden = !showMoreButtonVisible
+                return footer
+            }
+            return UICollectionReusableView()
+        }
+        
+        // Устанавливаем размер ячейки и футера
+        
+        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+            return showMoreButtonVisible ? CGSize(width: view.frame.width, height: 60) : .zero
+        }
+        
+        // MARK: - UICollectionViewDelegate Methods
+        
+        func scrollViewDidScroll(_ scrollView: UIScrollView) {
+            // Показываем кнопку, если пользователь дошел до конца списка
+            let isNearBottom = scrollView.contentOffset.y + scrollView.frame.size.height >= scrollView.contentSize.height - 50
+            if isNearBottom {
+                showMoreButtonVisible = true
+                collectionView.reloadSections(IndexSet(integer: 0))
+            }
+        }
+        
+        // MARK: - Actions
+        
+    @objc func loadMoreCells() {
+        guard currentTournament != "" else {
+            switch currentSort {
+            case 1:
+                startLoadingAnimation()
+                viewModel.getNextTwentyMatches(sortedBy: .descending) {
+                    self.collectionView.reloadData()
+                    self.collectionView.layoutIfNeeded() // Убедитесь, что обновление завершено
+                    self.stopLoadingAnimation()
+                }
+            default:
+                startLoadingAnimation()
+                viewModel.getNextTwentyMatches(sortedBy: .ascending) {
+                    self.collectionView.reloadData()
+                    self.collectionView.layoutIfNeeded()
+
+                    self.stopLoadingAnimation()
+                }
+            }
+            return
+        }
+        
+        // Выполнение для текущего турнира
+        startLoadingAnimation()
+        
+        switch currentSort {
+        case 1:
+            viewModel.getNextTwentyMatchesWith(leagueId: currentTournament, sortedBy: .descending) {
+                self.collectionView.reloadData()
+                self.collectionView.layoutIfNeeded()
+                self.stopLoadingAnimation()
+            }
+        default:
+            viewModel.getNextTwentyMatchesWith(leagueId: currentTournament, sortedBy: .ascending) {
+                self.collectionView.reloadData()
+                self.collectionView.layoutIfNeeded()
+                self.stopLoadingAnimation()
+            }
+        }
+    }
+
 }

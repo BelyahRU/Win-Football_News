@@ -75,15 +75,16 @@ class MainViewModel {
     }
 
     // Функция для загрузки матчей по лиге
-    public func getNextTwentyMatchesWith(leagueId: LeagueIds, sortedBy sortOrder: MatchSortOrder, completion: @escaping ([Match]) -> Void) {
-        matchesManager?.loadMoreMatchesFrom(leagueId: leagueId.rawValue, sortedBy: sortOrder) { [weak self] result in
+    public func getNextTwentyMatchesWith(leagueId: String, sortedBy sortOrder: MatchSortOrder, completion: @escaping () -> Void) {
+        matchesManager?.loadMoreMatchesFrom(leagueId: leagueId, sortedBy: sortOrder) { [weak self] result in
             switch result {
             case .success(let loadedMatches):
+                print(loadedMatches)
                 self?.matches = loadedMatches
-                completion(loadedMatches)
+                completion()
             case .failure(let error):
                 self?.handleError(error)
-                completion([])
+                completion()
             }
         }
     }

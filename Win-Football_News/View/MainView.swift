@@ -3,19 +3,19 @@ import SnapKit
 
 class MainView: UIView {
     
-    public let filtersButton: UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(named: Resources.Images.Buttons.filtersButton), for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
-    public let sortButton: UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(named: Resources.Images.Buttons.sortButton), for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+//    public let filtersButton: UIButton = {
+//        let button = UIButton()
+//        button.setImage(UIImage(named: Resources.Images.Buttons.filtersButton), for: .normal)
+//        button.translatesAutoresizingMaskIntoConstraints = false
+//        return button
+//    }()
+//    
+//    public let sortButton: UIButton = {
+//        let button = UIButton()
+//        button.setImage(UIImage(named: Resources.Images.Buttons.sortButton), for: .normal)
+//        button.translatesAutoresizingMaskIntoConstraints = false
+//        return button
+//    }()
     
     public let logoImageView: UIImageView = {
          let im = UIImageView()
@@ -47,8 +47,7 @@ class MainView: UIView {
     
     private func setupSubviews() {
         addSubview(logoImageView)
-        addSubview(sortButton)
-        addSubview(filtersButton)
+//        addSubview(filtersButton)
     }
     
     private func setupConstraints() {
@@ -58,19 +57,12 @@ class MainView: UIView {
             make.leading.equalToSuperview().offset(17)
             make.top.equalToSuperview().offset(65)
         }
-        
-        
-        sortButton.snp.makeConstraints { make in
-            make.size.equalTo(28)
-            make.top.equalToSuperview().offset(70)
-            make.trailing.equalToSuperview().offset(-14)
-        }
-        
-        filtersButton.snp.makeConstraints { make in
-            make.size.equalTo(28)
-            make.top.equalToSuperview().offset(70)
-            make.trailing.equalTo(sortButton.snp.leading).offset(-17)
-        }
+//        
+//        filtersButton.snp.makeConstraints { make in
+//            make.size.equalTo(28)
+//            make.top.equalToSuperview().offset(70)
+//            make.trailing.equalTo(sortButton.snp.leading).offset(-17)
+//        }
         
     }
 }

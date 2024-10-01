@@ -8,13 +8,13 @@ enum LogoFetcherError: Error, CustomStringConvertible {
     var description: String {
         switch self {
         case .invalidURL(let urlString):
-            return "Invalid URL: \(urlString)"
+            return "LogoFetcherError.Invalid URL: \(urlString)"
         case .networkError(let error):
-            return "Network error occurred: \(error.localizedDescription)"
+            return "LogoFetcherError.Network error occurred: \(error.localizedDescription)"
         case .invalidResponse(let statusCode):
-            return "Received invalid response with status code: \(statusCode)"
+            return "LogoFetcherError.Received invalid response with status code: \(statusCode)"
         case .noDataReceived:
-            return "No data received from the server."
+            return "LogoFetcherError.No data received from the server."
         }
     }
 }
