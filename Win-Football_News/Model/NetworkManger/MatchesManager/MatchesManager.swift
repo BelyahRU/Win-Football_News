@@ -21,7 +21,6 @@ final class MatchesManager {
     private var currentMatches: [Match] = []
 
     init(completion: @escaping (Result<Void, MatchesManagerError>) -> Void) {
-        // Загружаем данные при инициализации
         self.loadInitialMatches(completion: completion)
     }
     
@@ -38,13 +37,11 @@ final class MatchesManager {
     }
     
     func reloadMatches(completion: @escaping (Result<Void, MatchesManagerError>) -> Void) {
-        // Сброс параметров перед повторной загрузкой данных
         currentPage = 0
         currentLeague = nil
         currentSortOrder = .ascending
-        allMatches = []  // Очистка текущих матчей
+        allMatches = []
         
-        // Загрузка данных заново с помощью APICaller
         loadInitialMatches(completion: completion)
     }
 
@@ -93,7 +90,6 @@ final class MatchesManager {
         }
 
         currentPage += 1
-//        let paginatedMatches = Array(matches[startIndex..<endIndex])
         currentMatches += Array(matches[startIndex..<endIndex])
         loadLogosSequentially(matches: currentMatches, index: 0) { result in
             switch result {
@@ -124,7 +120,6 @@ final class MatchesManager {
                     matches[matchIndex].homeTeamLogo = data
                 }
             case .failure:
-                // Логотип не найден, просто не добавляем его
                 print("Home team logo not found for match: \(match)")
             }
             group.leave()
@@ -138,7 +133,6 @@ final class MatchesManager {
                     matches[matchIndex].guestTeamLogo = data
                 }
             case .failure:
-                // Логотип не найден, просто не добавляем его
                 print("Away team logo not found for match: \(match)")
             }
             group.leave()
@@ -151,9 +145,7 @@ final class MatchesManager {
     }
 
 
-    // Метод для загрузки матчей с помощью APICaller
     private func loadMatchesFromAPI(completion: @escaping (Result<[Match], Error>) -> Void) {
-        // Используем APICaller для получения матчей
         APICaller.shared.fetchAllMatches { result in
             switch result {
             case .success(let matches):

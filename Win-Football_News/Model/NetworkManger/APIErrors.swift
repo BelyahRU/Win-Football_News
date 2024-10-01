@@ -6,6 +6,7 @@ enum APIError: Error, LocalizedError {
     case decodingFailed(league: LeagueIds, error: Error)
     case fetchingMatchesFailed(league: LeagueIds, error: Error)
     case multipleErrors(errors: [Error])
+    case rateLimitExceeded(message: String)
 
     var errorDescription: String? {
         switch self {
@@ -19,6 +20,8 @@ enum APIError: Error, LocalizedError {
             return "Failed to decode JSON data"
         case .multipleErrors(let errors):
             return "Multiple errors occurred: \(errors.map { $0.localizedDescription }.joined(separator: ", "))"
+        case .rateLimitExceeded(let message):
+            return "Rate limit% \(message)"
         }
     }
 }

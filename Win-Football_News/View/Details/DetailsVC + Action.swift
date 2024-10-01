@@ -17,13 +17,15 @@ extension DetailsViewController {
     
     @objc
     func homeTeamPressed() {
-        print("home")
+        currentTeam = "home"
         detailsView.teamsSelectionView.styleButtons(isHomeSelected: true)
+        loadData()
     }
     
     @objc
     func guestTeamPressed() {
-        print("guest")
+        currentTeam = "guest"
         detailsView.teamsSelectionView.styleButtons(isHomeSelected: false)
+        loadData()
     }
 }

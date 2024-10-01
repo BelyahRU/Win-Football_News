@@ -30,9 +30,10 @@ class MainViewModel {
                         self.matchesLoaded()
                     }
                 }
-                print("OK")
             case .failure(let error):
-                print("Error \(error)")
+                DispatchQueue.main.async {
+                    self.delegate?.showError(str: error.localizedDescription)
+                }
             }
         })
     }
@@ -79,7 +80,6 @@ class MainViewModel {
         matchesManager?.loadMoreMatchesFrom(leagueId: leagueId, sortedBy: sortOrder) { [weak self] result in
             switch result {
             case .success(let loadedMatches):
-                print(loadedMatches)
                 self?.matches = loadedMatches
                 completion()
             case .failure(let error):

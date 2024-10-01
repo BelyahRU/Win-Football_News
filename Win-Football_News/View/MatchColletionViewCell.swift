@@ -199,14 +199,10 @@ class MatchColletionViewCell: UICollectionViewCell {
         team2Label.text = team2
         if let logo1Data = logo1Data {
             logo1ImageView.image = UIImage(data: logo1Data)
-            
-            print(logo1Data)
         }
         
         if let logo2Data = logo2Data {
-            //
             logo2ImageView.image = UIImage(data: logo2Data)
-            print(logo2Data)
         }
     }
 }

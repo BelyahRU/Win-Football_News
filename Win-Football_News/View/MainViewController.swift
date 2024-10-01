@@ -101,6 +101,12 @@ class MainViewController: UIViewController, MainViewModelDelegate {
         activityIndicator.stopAnimating()
     }
     
+    func showError(str: String) {
+        let errorVC = ErrorViewController()
+        errorVC.configure(with: str)
+        self.navigationController?.pushViewController(errorVC, animated: true)
+    }
+    
     //MARK: - MainViewModelDelegate
     func matchesLoaded() {
         stopLoadingAnimation()

@@ -35,11 +35,26 @@ final class APICaller {
                 completion(.failure(APIError.noData(league: league)))
                 return
             }
+            
+            do {
+                let json = try JSONSerialization.jsonObject(with: data, options: [])
+                if let matchesResponse = json as? [String: Any],
+                   let message = matchesResponse["message"] as? String,
+                   let errorCode = matchesResponse["errorCode"] as? Int, errorCode == 429 {
+                    // Обработка ошибки 429
+                    completion(.failure(APIError.rateLimitExceeded(message: message)))
+                    return
+                }
+            } catch {
+                completion(.failure(APIError.decodingFailed(league: league, error: error)))
+                return
+            }
 
             do {
+                //ADD
                 let decoder = JSONDecoder()
-                print(String(data: data, encoding: .utf8))
                 var matchesResponse = try decoder.decode(MatchesResponse.self, from: data)
+                
                 
                 guard let matches = matchesResponse.matches else {
                     completion(.failure(APIError.decodingFailed(league: league, error: NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "No matches available"]))))

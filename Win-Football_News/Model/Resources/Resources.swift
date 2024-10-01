@@ -29,5 +29,11 @@ enum Resources {
             static let closeButton = "closeButton"
             static let backButton = "backButton"
         }
+        
+        enum MatchResultImage {
+            static let greenCircle = "greenCircle"
+            static let redCircle = "redCircle"
+            static let yellowCircle = "yellowCircle"
+        }
     }
 }

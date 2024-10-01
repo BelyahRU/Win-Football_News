@@ -68,6 +68,18 @@ class DetailsView: UIView {
     
     public let teamsSelectionView = TeamSelectionView()
     
+    private let recentResults1Label: UILabel = {
+        let label = UILabel()
+        label.textColor = .gray
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.text = "Recent results"
+        label.textAlignment = .left
+        return label
+    }()
+    
+    
+    public var recentResultView = RecentResultsView()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = Resources.Colors.mainBackgroundColor
@@ -93,6 +105,8 @@ class DetailsView: UIView {
         addSubview(team2Label)
         addSubview(dateLabel)
         addSubview(teamsSelectionView)
+        addSubview(recentResults1Label)
+        addSubview(recentResultView)
     }
     
     private func setupConstraints() {
@@ -149,6 +163,19 @@ class DetailsView: UIView {
             make.trailing.equalToSuperview().offset(-17)
             make.height.equalTo(27)
         }
+        
+        recentResults1Label.snp.makeConstraints { make in
+            make.top.equalTo(teamsSelectionView.snp.bottom).offset(14)
+            make.leading.equalTo(leftSeparatorView.snp.leading)
+        }
+        
+        recentResultView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(17)
+            make.trailing.equalToSuperview().offset(-17)
+            make.height.equalTo(115)
+            make.top.equalTo(recentResults1Label.snp.bottom).offset(14)
+        }
+        
     }
    
     func setupTeamsView(team1Name: String, firstImage: Data, team2Name: String, secondImage: Data) {
