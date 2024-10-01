@@ -10,7 +10,8 @@
 		1A6B33F82CAB9D14005A74FE /* DetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6B33F72CAB9D14005A74FE /* DetailsViewModel.swift */; };
 		1A6B33FA2CAB9D36005A74FE /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6B33F92CAB9D36005A74FE /* DateHelper.swift */; };
 		1A6B33FC2CAB9E23005A74FE /* DetailsVC + Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6B33FB2CAB9E22005A74FE /* DetailsVC + Action.swift */; };
-		1A6B33FE2CAB9FE6005A74FE /* TeamsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6B33FD2CAB9FE5005A74FE /* TeamsView.swift */; };
+		1A83C4B22CABA4610092A6D5 /* TeamSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A83C4B12CABA4610092A6D5 /* TeamSelectionView.swift */; };
+		1A83C4B42CABA90D0092A6D5 /* TeamsResultFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A83C4B32CABA90D0092A6D5 /* TeamsResultFetcher.swift */; };
 		1AD624552CA78DFC0002F2AE /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD624542CA78DFC0002F2AE /* MainView.swift */; };
 		1AD624572CA7B0280002F2AE /* MainVC + Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD624562CA7B0280002F2AE /* MainVC + Action.swift */; };
 		1AD624592CA7B17D0002F2AE /* MainVC + CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD624582CA7B17D0002F2AE /* MainVC + CollectionView.swift */; };
@@ -46,7 +47,8 @@
 		1A6B33F72CAB9D14005A74FE /* DetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewModel.swift; sourceTree = "<group>"; };
 		1A6B33F92CAB9D36005A74FE /* DateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelper.swift; sourceTree = "<group>"; };
 		1A6B33FB2CAB9E22005A74FE /* DetailsVC + Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailsVC + Action.swift"; sourceTree = "<group>"; };
-		1A6B33FD2CAB9FE5005A74FE /* TeamsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsView.swift; sourceTree = "<group>"; };
+		1A83C4B12CABA4610092A6D5 /* TeamSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamSelectionView.swift; sourceTree = "<group>"; };
+		1A83C4B32CABA90D0092A6D5 /* TeamsResultFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsResultFetcher.swift; sourceTree = "<group>"; };
 		1AD624542CA78DFC0002F2AE /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		1AD624562CA7B0280002F2AE /* MainVC + Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainVC + Action.swift"; sourceTree = "<group>"; };
 		1AD624582CA7B17D0002F2AE /* MainVC + CollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainVC + CollectionView.swift"; sourceTree = "<group>"; };
@@ -97,7 +99,7 @@
 				1AD624732CAB93C90002F2AE /* DetailsViewController.swift */,
 				1AD624762CAB940E0002F2AE /* DetailsView.swift */,
 				1A6B33FB2CAB9E22005A74FE /* DetailsVC + Action.swift */,
-				1A6B33FD2CAB9FE5005A74FE /* TeamsView.swift */,
+				1A83C4B12CABA4610092A6D5 /* TeamSelectionView.swift */,
 			);
 			path = Details;
 			sourceTree = "<group>";
@@ -184,6 +186,7 @@
 				1AD624682CAB3F6E0002F2AE /* APIErrors.swift */,
 				1AD624782CAB98840002F2AE /* DetailsCaller.swift */,
 				1AD6247A2CAB98BD0002F2AE /* NetworkConstant.swift */,
+				1A83C4B32CABA90D0092A6D5 /* TeamsResultFetcher.swift */,
 			);
 			path = NetworkManger;
 			sourceTree = "<group>";
@@ -306,7 +309,6 @@
 				1AD6247B2CAB98BD0002F2AE /* NetworkConstant.swift in Sources */,
 				1AEE3DFD2CA7783C00C93E60 /* Team.swift in Sources */,
 				1AD624742CAB93C90002F2AE /* DetailsViewController.swift in Sources */,
-				1A6B33FE2CAB9FE6005A74FE /* TeamsView.swift in Sources */,
 				1AD624572CA7B0280002F2AE /* MainVC + Action.swift in Sources */,
 				1AD624552CA78DFC0002F2AE /* MainView.swift in Sources */,
 				1A6B33FA2CAB9D36005A74FE /* DateHelper.swift in Sources */,
@@ -315,9 +317,11 @@
 				1AD624652CA8D58E0002F2AE /* LogoFetcher.swift in Sources */,
 				1AD624792CAB98840002F2AE /* DetailsCaller.swift in Sources */,
 				1AD6245E2CA8B01E0002F2AE /* Resources.swift in Sources */,
+				1A83C4B42CABA90D0092A6D5 /* TeamsResultFetcher.swift in Sources */,
 				1AD624672CA9983A0002F2AE /* ErrorHandler.swift in Sources */,
 				1A6B33FC2CAB9E23005A74FE /* DetailsVC + Action.swift in Sources */,
 				1AD624702CAB72470002F2AE /* FilterView.swift in Sources */,
+				1A83C4B22CABA4610092A6D5 /* TeamSelectionView.swift in Sources */,
 				1AD6246E2CAB651A0002F2AE /* MainVC + sort.swift in Sources */,
 				1AEE3DF22CA7753D00C93E60 /* MainViewModel.swift in Sources */,
 				1AEE3DFF2CA7787700C93E60 /* Season.swift in Sources */,

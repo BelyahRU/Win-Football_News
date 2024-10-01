@@ -37,6 +37,12 @@ class DetailsViewController: UIViewController {
         detailsView.team2Label.text = match.awayTeam.name
         detailsView.dateLabel.text = viewModel.formatDate(match.utcDate)
         
+        detailsView.setupTeamsView(team1Name: match.homeTeam.name ?? "", firstImage: match.homeTeamLogo ?? Data(), team2Name: match.awayTeam.name ?? "", secondImage: match.guestTeamLogo ?? Data())
+        
+        TeamResultsFetcher.shared.fetchLastFiveResults(for: match.homeTeam.id ?? 0) { data in
+            print(data)
+        }
+        
         DetailsCaller.shared.fetchMatchDetails(matchID: match.id) { venue, location in
             if let venue = venue, let location = location {
                 print("Стадион: \(venue), Местоположение: \(location)")

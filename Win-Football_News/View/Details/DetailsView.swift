@@ -66,7 +66,7 @@ class DetailsView: UIView {
         return label
     }()
     
-    public let teamView = TeamsView()
+    public let teamsSelectionView = TeamSelectionView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -81,7 +81,6 @@ class DetailsView: UIView {
     private func configure() {
         setupSubviews()
         setupConstraints()
-        setupTeamView()
     }
     
     private func setupSubviews() {
@@ -93,6 +92,7 @@ class DetailsView: UIView {
         addSubview(team1Label)
         addSubview(team2Label)
         addSubview(dateLabel)
+        addSubview(teamsSelectionView)
     }
     
     private func setupConstraints() {
@@ -142,37 +142,19 @@ class DetailsView: UIView {
             make.top.equalTo(leftSeparatorView.snp.bottom).offset(14)
             make.trailing.equalToSuperview().offset(-17)
         }
-    }
-    
-    private func setupTeamView() {
-        addSubview(teamView)
-        teamView.snp.makeConstraints { make in
+        
+        teamsSelectionView.snp.makeConstraints { make in
+            make.top.equalTo(dateLabel.snp.bottom).offset(30)
             make.leading.equalToSuperview().offset(17)
             make.trailing.equalToSuperview().offset(-17)
             make.height.equalTo(27)
         }
-            
-        // Изначально обе команды не выбраны
-        teamView.selectTeam(.left)
-        
-        // Добавляем жесты нажатия
-        let leftTapGesture = UITapGestureRecognizer(target: self, action: #selector(teamTapped(_:)))
-        teamView.addGestureRecognizer(leftTapGesture)
-        
-        let rightTapGesture = UITapGestureRecognizer(target: self, action: #selector(teamTapped(_:)))
-        teamView.addGestureRecognizer(rightTapGesture)
-        }
-    @objc private func teamTapped(_ gesture: UITapGestureRecognizer) {
-        if gesture.location(in: teamView).x < teamView.bounds.width / 2 {
-            teamView.selectTeam(.left)
-            updateData(for: "Первая команда")
-        } else {
-            teamView.selectTeam(.right)
-            updateData(for: "Вторая команда")
-        }
     }
-    
-    func updateData(for team: String) {
-//            dataLabel.text = "Данные для \(team)"
+   
+    func setupTeamsView(team1Name: String, firstImage: Data, team2Name: String, secondImage: Data) {
+        teamsSelectionView.homeTeamButton.setTitle(team1Name, for: .normal)
+        teamsSelectionView.awayTeamButton.setTitle(team2Name, for: .normal)
+        teamsSelectionView.logo1ImageView.image = UIImage(data: firstImage)
+        teamsSelectionView.logo2ImageView.image = UIImage(data: secondImage)
     }
 }
