@@ -8,8 +8,24 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.showsVerticalScrollIndicator = false
+        collectionView.isUserInteractionEnabled = true
         collectionView.register(MatchColletionViewCell.self, forCellWithReuseIdentifier: MatchColletionViewCell.reuseId)
         collectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "footer")
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let match = viewModel.getMatch(by: indexPath.row) else {
+            print("Match not found")
+            return
+        }
+        
+        // Инициализация `DetailsViewController`
+        let detailsVC = DetailsViewController()
+        detailsVC.match = match  // Передаем данные о матче в контроллер
+        
+        // Переход на экран деталей
+        navigationController?.pushViewController(detailsVC, animated: true)
+    
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

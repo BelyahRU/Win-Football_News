@@ -27,6 +27,7 @@ enum Resources {
             static let sortButton = "sortButton"
             static let reloadButton = "reloadButton"
             static let closeButton = "closeButton"
+            static let backButton = "backButton"
         }
     }
 }
